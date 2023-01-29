@@ -1,0 +1,132 @@
+﻿<div class = "row">
+    <div class = "col-md-12">
+        <h2 class = "text-primary">Presidents</h2>
+    </div>
+    </div>
+    <hr />
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-success" onclick="RefreshList()">Refresh List</button>
+        <button class="btn btn-primary" onclick="ShowAll()">Show All</button>
+        <button class="btn btn-danger" onclick="HideAll()">Hide All</button>
+    </div>
+</div>
+    <hr />
+    <div class="row">
+    <div class = "col-md-4">
+        <table class="table" id ="tblPrez">
+        </table>
+    </div>  
+    <div class="col-md-8">
+        <div class="row">
+           <div class = "col-md-12">
+               <div class="row" id="dvPeek" onclick="ClearPeek()"></div>
+        </div>   
+        </div>
+        <div class="row">
+             <div class = "col-md-12">
+                 <div class="row" id="dvKeep">
+                 </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const tblPrez = document.getElementById("tblPrez");
+    const dvPeek = document.getElementById("dvPeek");
+    const dvKeep = document.getElementById("dvKeep");
+    let prezarray = [];
+
+    RefreshList();
+
+    function ShowPrezList(json_array){
+        prezarray = json_array;
+        tblPrez.replaceChildren();
+        json_array.forEach(p => CreatePrezRow(p));
+    }
+
+    function CreatePrezRow(prez, peek){
+        const r = document.createElement("tr");
+        let td = document.createElement("td");
+
+        td.innerHTML = `<a href='/President/President/${prez.code}'>${prez.code}</a>`;
+        r.appendChild(td);
+
+        td = document.createElement("td");
+        td.innerHTML = GetShowButton(prez, true);
+        r.appendChild(td);
+
+        td = document.createElement("td");
+        td.innerHTML = GetShowButton(prez, false);
+        r.appendChild(td);
+
+        tblPrez.appendChild(r);
+    }
+
+    function CreatePrezCard(prez, peek){
+        const dv = peek ? dvPeek : dvKeep;
+        let card =  `
+        <div id="${peek ? "" : GetCardId(prez.code)}" class = "col-md-4">
+        <div class="card">
+        ${peek ? "" : `<div  class = "card-header d-flex justify-content-end pe-1"><button  onclick="HideCard('${prez.code}')" class="btn btn-danger">X</button></div>`}
+  <img class="card-img-top" src="/images/${prez.num}.jpeg" alt="Card image">
+  <div class="card-body">
+    <h4 class="card-title">${prez.firstName + " " + prez.lastName}</h4>
+    <p class="card-text">${prez.termStart + " - " + prez.termEnd}</p>
+    <a href="/President/President/${prez.code}" class="btn btn-primary">See Profile</a>
+    </div>
+    </div>
+    </div>`
+        if(peek){
+            dv.innerHTML = card;
+        }
+        else{
+            console.log(GetCardId(prez.code));
+            if(document.getElementById(GetCardId(prez.code)) !=null){
+                HideCard(prez.code);
+            }
+            dv.innerHTML = card += dv.innerHTML;
+        }
+    }
+
+    function GetShowButton(prez, peek){
+        return  `<button onclick='ShowPrez("${prez.code}", ${peek})' class = 'btn btn-primary bg-primary'>${peek ? "Peek" : "Keep"}</button>`
+    }
+
+    function ShowPrez(code, peek){
+        const prez = prezarray.find(p => p.code == code);
+        CreatePrezCard(prez, peek);
+        window.scroll(0,0);
+    }
+
+    function HideCard(code){
+        const id = GetCardId(code);
+        const card = document.getElementById(id);
+        dvKeep.removeChild(card);   
+        
+    }
+
+    function RefreshList(){
+     fetch("/president/APIPresidentList")
+    .then(resp =>resp.json())
+    .then(json_array => ShowPrezList(json_array));
+    }
+
+    function ShowAll(){
+        prezarray.forEach(p=> ShowPrez(p.code, false));
+    }
+
+    function HideAll(){
+        prezarray.forEach(p=> HideCard(p.code))
+    }
+
+    function ClearPeek(){
+        dvPeek.replaceChildren();
+    }
+
+    function GetCardId(code){
+        return "card-" + code;
+    }
+    
+</script>

@@ -1,0 +1,20 @@
+﻿@model RecordKeeperBizObjects.BizParty
+
+@{
+    ViewData["Title"] = "Delete";
+   
+}
+
+<h1>Delete @Model.PartyName</h1>
+    
+<h3>Are you sure you want to delete @Model.PartyName?</h3>
+
+
+<div>
+    <hr />   
+    <form asp-action="Delete">
+        @Html.HiddenFor(model => model.PartyId)
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

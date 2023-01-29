@@ -1,0 +1,30 @@
+﻿@using RecordKeeperBizObjects
+@model List<BizPresident>
+@{
+    BizPresident prez = Model[0];
+}
+<div class = "row">
+    <div class = "col-md-12 text-center">
+        <h1>US Gov List of Presidents</h1>
+        <h2>Number of US Presidents = @Model.Count()</h2>
+    </div>
+</div>
+<div class = "row">
+    <div class = "col-md-6">
+        <table class = "table table-striped border border-2 border-dark">
+            @foreach(BizPresident p in Model)
+            {
+              <tr>
+                  <td><img src="/images/@(p.Num).jpeg" style="width:100px"/></td>
+                <td>@Html.ActionLink(p.Num.ToString(), "President", new{id = p.Code})</td>
+                <td>@p.FirstName</td>
+                <td>@p.LastName</td>
+            </tr>  
+            }           
+        </table>
+        </div>
+</div>
+
+
+
+

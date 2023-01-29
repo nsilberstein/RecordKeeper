@@ -1,0 +1,79 @@
+﻿@model RecordKeeperBizObjects.BizPresident
+
+@{
+    ViewData["Title"] = "Edit";
+    SelectList lstparty = new SelectList(Model.PartyList(), "PartyId", "PartyName");
+}
+
+<h1>Edit</h1>
+
+<h4>BizPresident</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="PresidentId" class="form-control" type = "hidden" />              
+            </div>
+            <div class="form-group">
+                <label asp-for="PartyId" class="control-label"></label>
+                <select asp-for="PartyId" asp-items=lstparty class = "form-control">
+                    <option value = "">Select a Party</option>
+                </select>
+                <span asp-validation-for="PartyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Num" class="control-label"></label>
+                <input asp-for="Num" class="form-control" />
+                <span asp-validation-for="Num" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TermStart" class="control-label"></label>
+                <input asp-for="TermStart" class="form-control" />
+                <span asp-validation-for="TermStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TermEnd" class="control-label"></label>
+                <input asp-for="TermEnd" class="form-control" />
+                <span asp-validation-for="TermEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateBorn" class="control-label"></label>
+                <input asp-for="DateBorn" class="form-control" />
+                <span asp-validation-for="DateBorn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateDied" class="control-label"></label>
+                <input asp-for="DateDied" class="form-control" />
+                <span asp-validation-for="DateDied" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
